@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Discover India - Tourism Recommendations</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <i class="fas fa-map-marked-alt"></i>
+                <h1>Discover India</h1>
+            </div>
+            <div class="search-container">
+                <div class="search-box">
+                    <input 
+                        type="text" 
+                        id="searchInput" 
+                        placeholder="Search destinations, cities, states..."
+                        autocomplete="off"
+                    >
+                    <button id="searchBtn" class="search-btn">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+                <!-- Autocomplete dropdown -->
+                <div id="autocompleteDropdown" class="autocomplete-dropdown" style="display: none;">
+                    <div id="autocompleteList" class="autocomplete-list">
+                        <!-- Suggestions will be populated here -->
+                    </div>
+                </div>
+            </div>
+            <div class="header-actions">
+                <button class="btn-primary" id="exploreBtn">
+                    <i class="fas fa-compass"></i>
+                    Explore
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Search Results Section -->
+        <section id="searchResults" class="search-results" style="display: none;">
+            <div class="section-header">
+                <h2>Search Results</h2>
+                <button type="button" class="btn-secondary" id="clearSearch">
+                    <i class="fas fa-times"></i>
+                    Clear Search
+                </button>
+            </div>
+            <div class="places-grid" id="searchResultsGrid"></div>
+        </section>
+
+        <!-- Feed Section -->
+        <section id="feedSection" class="feed-section">
+            <div class="section-header">
+                <h2>Recommended Destinations</h2>
+                <p>Discover amazing places across India</p>
+            </div>
+            
+            <!-- Loading State -->
+            <div id="loadingState" class="loading-state">
+                <div class="loading-spinner"></div>
+                <p>Loading amazing destinations...</p>
+            </div>
+
+            <!-- Places Grid -->
+            <div class="places-grid" id="placesGrid"></div>
+
+            <!-- Load More Button -->
+            <div class="load-more-container" id="loadMoreContainer" style="display: none;">
+                <button class="btn-load-more" id="loadMoreBtn">
+                    <i class="fas fa-plus"></i>
+                    Load More Places
+                </button>
+            </div>
+
+            <!-- No More Results -->
+            <div class="no-more-results" id="noMoreResults" style="display: none;">
+                <i class="fas fa-check-circle"></i>
+                <p>You've seen all the amazing destinations!</p>
+            </div>
+        </section>
+    </main>
+
+    <!-- Place Detail Modal -->
+    <div id="placeModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalTitle"></h3>
+                <button type="button" class="modal-close" id="closeModal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="place-detail">
+                    <div class="place-image">
+                        <img id="modalImage" src="" alt="">
+                    </div>
+                    <div class="place-info">
+                        <div class="place-location">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span id="modalLocation"></span>
+                        </div>
+                        <div class="place-rating">
+                            <div class="stars" id="modalStars"></div>
+                            <span id="modalRating"></span>
+                            <span class="reviews">(<span id="modalReviews"></span> reviews)</span>
+                        </div>
+                        <div class="place-time">
+                            <i class="fas fa-clock"></i>
+                            <span>Best time: <span id="modalBestTime"></span></span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="similar-places">
+                    <h4>Similar Places</h4>
+                    <div class="similar-grid" id="similarGrid"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Error Toast -->
+    <div id="errorToast" class="toast error-toast">
+        <i class="fas fa-exclamation-circle"></i>
+        <span id="errorMessage"></span>
+        <button type="button" class="toast-close">
+            <i class="fas fa-times"></i>
+        </button>
+    </div>
+
+    <!-- Success Toast -->
+    <div id="successToast" class="toast success-toast">
+        <i class="fas fa-check-circle"></i>
+        <span id="successMessage"></span>
+        <button type="button" class="toast-close">
+            <i class="fas fa-times"></i>
+        </button>
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>

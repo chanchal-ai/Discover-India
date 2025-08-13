@@ -1,0 +1,299 @@
+{
+ "cells": [
+  {
+   "cell_type": "code",
+   "execution_count": 11,
+   "id": "6fa8c20b-8213-42e7-bcd4-c38f251092b9",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import pandas as pd"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 48,
+   "id": "f79c06da-430e-49b6-b60e-4d0047db8d88",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "df = pd.read_csv(\"places.csv\")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 51,
+   "id": "e027d1a1-0aff-4f14-a751-afa12fcd617c",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "useful_columns = ['State', 'City', 'Name', 'Google review rating', 'Best Time to visit','Number of google review in lakhs']\n",
+    "existing_columns = [col for col in useful_columns if col in df.columns]"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 52,
+   "id": "c8840900-df7f-45f6-bc27-24cf3f7a7b14",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "df = df[existing_columns]"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 62,
+   "id": "ec5ecbcf-7dca-4848-8755-596355043b1f",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "df = df.drop_duplicates()\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 67,
+   "id": "92ad3542-ef01-4d33-a5b2-52db8a587d6f",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "df.loc[:, 'Google review rating'] = df['Google review rating'].astype(float)\n",
+    "df.loc[:, 'Number of google review in lakhs'] = df['Number of google review in lakhs'].astype(float)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 59,
+   "id": "26b7fe42-8ede-4451-81dc-6c616dfccbfb",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import numpy as np\n",
+    "df['popularity_score'] = df['Google review rating'] * np.log1p(df['total_reviews'])"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 68,
+   "id": "fb08c680-d674-4e7f-9b57-a0ee5a0752d1",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "df.to_csv(\"places_clean.csv\", index=False)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 69,
+   "id": "2aa0c1a8-5bac-4822-bdbb-75e28fb33f96",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Data cleaned and saved to 'places_clean.csv'\n"
+     ]
+    }
+   ],
+   "source": [
+    "print(\"Data cleaned and saved to 'places_clean.csv'\")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 70,
+   "id": "8517c97d-d7ca-4d8a-8817-e80ebe6e0f20",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>State</th>\n",
+       "      <th>City</th>\n",
+       "      <th>Name</th>\n",
+       "      <th>Google review rating</th>\n",
+       "      <th>Best Time to visit</th>\n",
+       "      <th>Number of google review in lakhs</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>0</th>\n",
+       "      <td>Delhi</td>\n",
+       "      <td>Delhi</td>\n",
+       "      <td>India Gate</td>\n",
+       "      <td>4.6</td>\n",
+       "      <td>Evening</td>\n",
+       "      <td>2.60</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>1</th>\n",
+       "      <td>Delhi</td>\n",
+       "      <td>Delhi</td>\n",
+       "      <td>Humayun's Tomb</td>\n",
+       "      <td>4.5</td>\n",
+       "      <td>Afternoon</td>\n",
+       "      <td>0.40</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2</th>\n",
+       "      <td>Delhi</td>\n",
+       "      <td>Delhi</td>\n",
+       "      <td>Akshardham Temple</td>\n",
+       "      <td>4.6</td>\n",
+       "      <td>Afternoon</td>\n",
+       "      <td>0.40</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>3</th>\n",
+       "      <td>Delhi</td>\n",
+       "      <td>Delhi</td>\n",
+       "      <td>Waste to Wonder Park</td>\n",
+       "      <td>4.1</td>\n",
+       "      <td>Evening</td>\n",
+       "      <td>0.27</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>4</th>\n",
+       "      <td>Delhi</td>\n",
+       "      <td>Delhi</td>\n",
+       "      <td>Jantar Mantar</td>\n",
+       "      <td>4.2</td>\n",
+       "      <td>Morning</td>\n",
+       "      <td>0.31</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>5</th>\n",
+       "      <td>Delhi</td>\n",
+       "      <td>Delhi</td>\n",
+       "      <td>Chandni Chowk</td>\n",
+       "      <td>4.2</td>\n",
+       "      <td>Afternoon</td>\n",
+       "      <td>0.25</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>6</th>\n",
+       "      <td>Delhi</td>\n",
+       "      <td>Delhi</td>\n",
+       "      <td>Lotus Temple</td>\n",
+       "      <td>4.5</td>\n",
+       "      <td>Evening</td>\n",
+       "      <td>0.59</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>7</th>\n",
+       "      <td>Delhi</td>\n",
+       "      <td>Delhi</td>\n",
+       "      <td>Red Fort</td>\n",
+       "      <td>4.5</td>\n",
+       "      <td>Afternoon</td>\n",
+       "      <td>1.50</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>8</th>\n",
+       "      <td>Delhi</td>\n",
+       "      <td>Delhi</td>\n",
+       "      <td>Agrasen ki Baoli</td>\n",
+       "      <td>4.2</td>\n",
+       "      <td>Afternoon</td>\n",
+       "      <td>0.41</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>9</th>\n",
+       "      <td>Delhi</td>\n",
+       "      <td>Delhi</td>\n",
+       "      <td>Sunder Nursery</td>\n",
+       "      <td>4.6</td>\n",
+       "      <td>Afternoon</td>\n",
+       "      <td>0.16</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "   State   City                  Name  Google review rating  \\\n",
+       "0  Delhi  Delhi            India Gate                   4.6   \n",
+       "1  Delhi  Delhi        Humayun's Tomb                   4.5   \n",
+       "2  Delhi  Delhi     Akshardham Temple                   4.6   \n",
+       "3  Delhi  Delhi  Waste to Wonder Park                   4.1   \n",
+       "4  Delhi  Delhi         Jantar Mantar                   4.2   \n",
+       "5  Delhi  Delhi         Chandni Chowk                   4.2   \n",
+       "6  Delhi  Delhi          Lotus Temple                   4.5   \n",
+       "7  Delhi  Delhi              Red Fort                   4.5   \n",
+       "8  Delhi  Delhi      Agrasen ki Baoli                   4.2   \n",
+       "9  Delhi  Delhi        Sunder Nursery                   4.6   \n",
+       "\n",
+       "  Best Time to visit  Number of google review in lakhs  \n",
+       "0            Evening                              2.60  \n",
+       "1          Afternoon                              0.40  \n",
+       "2          Afternoon                              0.40  \n",
+       "3            Evening                              0.27  \n",
+       "4            Morning                              0.31  \n",
+       "5          Afternoon                              0.25  \n",
+       "6            Evening                              0.59  \n",
+       "7          Afternoon                              1.50  \n",
+       "8          Afternoon                              0.41  \n",
+       "9          Afternoon                              0.16  "
+      ]
+     },
+     "execution_count": 70,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df.head(10)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "949911e1-669f-416d-9eb3-99eda6066409",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3 (ipykernel)",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.13.6"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 5
+}
